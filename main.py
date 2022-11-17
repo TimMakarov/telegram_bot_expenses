@@ -1,20 +1,7 @@
 import logging
 
-from telegram import (
-    Update,
-    ForceReply,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    ParseMode,
-)
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    MessageHandler,
-    Filters,
-    CallbackContext,
-    CallbackQueryHandler,
-)
+from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
 
 logger = logging.getLogger(__name__)
 
@@ -31,19 +18,14 @@ BACK_BUTTON = "Back"
 TUTORIAL_BUTTON = "Tutorial"
 
 # Build keyboards
-FIRST_MENU_MARKUP = InlineKeyboardMarkup(
-    [[InlineKeyboardButton(NEXT_BUTTON, callback_data=NEXT_BUTTON)]]
-)
-SECOND_MENU_MARKUP = InlineKeyboardMarkup(
-    [
-        [InlineKeyboardButton(BACK_BUTTON, callback_data=BACK_BUTTON)],
-        [
-            InlineKeyboardButton(
-                TUTORIAL_BUTTON, url="https://core.telegram.org/bots/api"
-            )
-        ],
-    ]
-)
+FIRST_MENU_MARKUP = InlineKeyboardMarkup([[
+    InlineKeyboardButton(NEXT_BUTTON, callback_data=NEXT_BUTTON)
+]])
+SECOND_MENU_MARKUP = InlineKeyboardMarkup([
+    [InlineKeyboardButton(BACK_BUTTON, callback_data=BACK_BUTTON)],
+    [InlineKeyboardButton(
+        TUTORIAL_BUTTON, url="https://core.telegram.org/bots/api")]
+])
 
 
 def echo(update: Update, context: CallbackContext) -> None:
@@ -52,14 +34,14 @@ def echo(update: Update, context: CallbackContext) -> None:
     """
 
     # Print to console
-    print(f"{update.message.from_user.first_name} wrote {update.message.text}")
+    print(f'{update.message.from_user.first_name} wrote {update.message.text}')
 
     if screaming and update.message.text:
         context.bot.send_message(
             update.message.chat_id,
             update.message.text.upper(),
             # To preserve the markdown, we attach entities (bold, italic...)
-            entities=update.message.entities,
+            entities=update.message.entities
         )
     else:
         # This is equivalent to forwarding, without the sender's name
@@ -93,7 +75,7 @@ def menu(update: Update, context: CallbackContext) -> None:
         update.message.from_user.id,
         FIRST_MENU,
         parse_mode=ParseMode.HTML,
-        reply_markup=FIRST_MENU_MARKUP,
+        reply_markup=FIRST_MENU_MARKUP
     )
 
 
@@ -103,7 +85,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     """
 
     data = update.callback_query.data
-    text = ""
+    text = ''
     markup = None
 
     if data == NEXT_BUTTON:
@@ -117,7 +99,11 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     update.callback_query.answer()
 
     # Update message content with corresponding menu section
-    update.callback_query.message.edit_text(text, ParseMode.HTML, reply_markup=markup)
+    update.callback_query.message.edit_text(
+        text,
+        ParseMode.HTML,
+        reply_markup=markup
+    )
 
 
 def main() -> None:
@@ -145,5 +131,5 @@ def main() -> None:
     updater.idle()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
