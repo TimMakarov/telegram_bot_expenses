@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "telegram-bot-expences"
+version = "0.1.0"
+description = ""
+authors = ["TimMakarov <6799840@gmail.com>"]
+readme = "README.md"
+packages = [{include = "telegram_bot_expences"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
